@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.valleypioneer.redenvelopehelper.MainActivity">
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/center_point"
+        android:layout_centerInParent="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@id/center_point"
+        android:layout_marginBottom="30dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_view"/>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/wechat_icon"
+            android:src="@drawable/wechat"
+            android:layout_alignRight="@id/center_view"
+            android:layout_marginRight="40dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/version"
+            android:layout_alignLeft="@id/center_view"
+            android:layout_marginLeft="40dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:text="1.2.8"/>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/grab_button"
+        android:src="@drawable/closed"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/center_point"
+        android:layout_centerHorizontal="true"/>
+
+
+
+</RelativeLayout>
