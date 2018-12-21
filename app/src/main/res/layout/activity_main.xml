@@ -3,64 +3,149 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.valleypioneer.redenvelopehelper.MainActivity">
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@+id/center_point"
-        android:layout_centerInParent="true"/>
 
     <RelativeLayout
+        android:id="@+id/wechat_version_re"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_above="@id/center_point"
-        android:layout_marginBottom="30dp">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp">
 
         <View
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/center_view"/>
+            android:id="@+id/center_view_1"/>
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/wechat_icon"
             android:src="@drawable/wechat"
-            android:layout_alignRight="@id/center_view"
+            android:layout_alignRight="@id/center_view_1"
             android:layout_marginRight="40dp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/version"
-            android:layout_alignLeft="@id/center_view"
+            android:id="@+id/wechat_version_tv"
+            android:layout_alignLeft="@id/center_view_1"
             android:layout_marginLeft="40dp"
             android:layout_centerVertical="true"
             android:textSize="20sp"
             android:textColor="@android:color/black"
-            android:text="6.7.3"/>
+            android:text="xxx"/>
 
     </RelativeLayout>
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/accessibility_service_button"
-        android:src="@drawable/closed"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/center_point"
-        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/accessibility_service_re"
+        android:layout_below="@id/wechat_version_re"
+        android:layout_marginBottom="15dp">
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/notification_service_button"
-        android:src="@drawable/closed"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/accessibility_service_button"
-        android:layout_centerHorizontal="true"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_view_2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view_2"
+            android:layout_marginRight="40dp"
+            android:text="红包辅助服务"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/accessibility_service_switch"
+            android:layout_alignLeft="@id/center_view_2"
+            android:layout_marginLeft="40dp"
+            android:textOn="关"
+            android:textOff="开"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification_listener_service_re"
+        android:layout_below="@id/accessibility_service_re"
+        android:layout_marginBottom="15dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_view_3"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view_3"
+            android:layout_marginRight="40dp"
+            android:text="红包通知服务"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notification_listener_service_switch"
+            android:layout_alignLeft="@id/center_view_3"
+            android:layout_marginLeft="40dp"
+            android:textOn="关"
+            android:textOff="开"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/delay_re"
+        android:layout_below="@id/notification_listener_service_re"
+        android:layout_marginBottom="15dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_view_4"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view_4"
+            android:layout_marginRight="40dp"
+            android:text="红包延时设置"/>
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/delay_seek_bar"
+            android:layout_alignLeft="@id/center_view_4"
+            android:layout_marginLeft="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bsb_bubble_color="@color/colorAccent"
+            app:bsb_bubble_text_color="@android:color/black"
+            app:bsb_max="5.0"
+            app:bsb_min="0.0"
+            app:bsb_progress="0"
+            app:bsb_second_track_color="@color/colorAccent"
+            app:bsb_section_count="10"
+            app:bsb_section_text_position="bottom_sides"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_show_section_mark="true"
+            app:bsb_show_section_text="true"
+            app:bsb_show_thumb_text="true"
+            app:bsb_track_color="@color/colorPrimary"/>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

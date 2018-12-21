@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.service.notification.NotificationListenerService;
@@ -23,51 +24,55 @@ import java.util.Set;
 public class RedEnvelopeNotificationService extends NotificationListenerService {
 
     @Override
-    public void onNotificationPosted(StatusBarNotification sbn) {
+    public void onNotificationPosted(final StatusBarNotification sbn) {
         // 如果该通知的包名不是微信，那么 pass 掉
         if (!"com.tencent.mm".equals(sbn.getPackageName())) {
             return;
         }
 
-        Notification notification = sbn.getNotification();
-        if (notification == null) {
-            return;
-        }
-        PendingIntent pendingIntent = null;
-        // 当 API > 18 时，使用 extras 获取通知的详细信息
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Bundle extras = notification.extras;
-            if (extras != null) {
-                // 获取通知标题
-                String title = extras.getString(Notification.EXTRA_TITLE, "");
-                // 获取通知内容
-                String content = extras.getString(Notification.EXTRA_TEXT, "");
-                if (!TextUtils.isEmpty(content) && content.contains("[微信红包]")) {
-                    pendingIntent = notification.contentIntent;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Notification notification = sbn.getNotification();
+                if (notification == null) {
+                    return;
                 }
-            }
-        } else {
-            // 当 API = 18 时，利用反射获取内容字段
-            List<String> textList = getText(notification);
-            if (textList != null && textList.size() > 0) {
-                for (String text : textList) {
-                    if (!TextUtils.isEmpty(text) && text.contains("[微信红包]")) {
-                        pendingIntent = notification.contentIntent;
-                        break;
+                PendingIntent pendingIntent = null;
+                // 当 API > 18 时，使用 extras 获取通知的详细信息
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    Bundle extras = notification.extras;
+                    if (extras != null) {
+                        // 获取通知标题
+                        String title = extras.getString(Notification.EXTRA_TITLE, "");
+                        // 获取通知内容
+                        String content = extras.getString(Notification.EXTRA_TEXT, "");
+                        if (!TextUtils.isEmpty(content) && content.contains("[微信红包]")) {
+                            pendingIntent = notification.contentIntent;
+                        }
+                    }
+                } else {
+                    // 当 API = 18 时，利用反射获取内容字段
+                    List<String> textList = getText(notification);
+                    if (textList != null && textList.size() > 0) {
+                        for (String text : textList) {
+                            if (!TextUtils.isEmpty(text) && text.contains("[微信红包]")) {
+                                pendingIntent = notification.contentIntent;
+                                break;
+                            }
+                        }
                     }
                 }
+                // 发送 pendingIntent 以此打开微信
+                try {
+                    if (pendingIntent != null) {
+                        Constants.IS_NOTIFICATION_SHOWN = true;
+                        pendingIntent.send();
+                    }
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        // 发送 pendingIntent 以此打开微信
-        try {
-            if (pendingIntent != null) {
-                Constants.IS_NOTIFICATION_SHOWN = true;
-                pendingIntent.send();
-            }
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-        }
-
+        }, (long) Constants.DELAY_TIME);
     }
 
     @Override

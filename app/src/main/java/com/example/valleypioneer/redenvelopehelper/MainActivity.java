@@ -2,12 +2,17 @@ package com.example.valleypioneer.redenvelopehelper;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.xw.repo.BubbleSeekBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,12 +20,14 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.version)
-    TextView version;
-    @BindView(R.id.accessibility_service_button)
-    ImageButton accessibilityButton;
-    @BindView(R.id.notification_service_button)
-    ImageButton notificationButton;
+    @BindView(R.id.accessibility_service_switch)
+    Switch accessibilitySwitch;
+    @BindView(R.id.notification_listener_service_switch)
+    Switch notificationSwicth;
+    @BindView(R.id.delay_seek_bar)
+    BubbleSeekBar delaySeekBar;
+    @BindView(R.id.wechat_version_tv)
+    TextView wechatVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,39 +37,62 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
-    private void initViews(){
-        accessibilityButton.setOnClickListener(new View.OnClickListener() {
+    private void initViews() {
+        accessibilitySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //打开无障碍服务列表，需要用户手动开启抢红包功能
                 openAccessibilityService();
             }
         });
-        notificationButton.setOnClickListener(new View.OnClickListener(){
+
+        notificationSwicth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openNotificationListenSettings();
             }
         });
+
+        delaySeekBar.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
+            @Override
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
+                Constants.DELAY_TIME = progressFloat;
+            }
+
+            @Override
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
+
+            }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
+
+            }
+        });
+
+
+        wechatVersion.setText(Constants.WECHAT_VERSION);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(Utils.isAccessibilitySettingsOn("RedEnvelopeAccessibilityService",this)){
-            accessibilityButton.setImageDrawable(getResources().getDrawable(R.drawable.opened));
+
+        if (Utils.isAccessibilitySettingsOn("RedEnvelopeAccessibilityService", this)) {
+            accessibilitySwitch.setChecked(true);
+        } else {
+            accessibilitySwitch.setChecked(false);
         }
-        else
-            accessibilityButton.setImageDrawable(getResources().getDrawable(R.drawable.closed));
+
         if (Utils.isNotificationListenerEnabled(this)) {
-            notificationButton.setImageDrawable(getResources().getDrawable(R.drawable.opened));
+            notificationSwicth.setChecked(true);
+        } else {
+            notificationSwicth.setChecked(false);
         }
-        else {
-            notificationButton.setImageDrawable(getResources().getDrawable(R.drawable.closed));
-        }
+
+        delaySeekBar.setProgress(Constants.DELAY_TIME);
     }
 
-    private void openAccessibilityService(){
+    private void openAccessibilityService() {
         Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
         startActivity(intent);
     }
