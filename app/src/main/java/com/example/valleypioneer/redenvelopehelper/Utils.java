@@ -1,10 +1,17 @@
 package com.example.valleypioneer.redenvelopehelper;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.Settings;
+import android.service.notification.StatusBarNotification;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import java.util.Set;
 
 /**
  * Created by valleypioneer on 2018/1/3.
@@ -44,4 +51,15 @@ public class Utils {
         }
         return false;
     }
+
+    public static boolean isNotificationListenerEnabled(Context context) {
+        Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
+        if (packageNames.contains(context.getPackageName())) {
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

@@ -17,8 +17,10 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.version)
     TextView version;
-    @BindView(R.id.grab_button)
-    ImageButton grabButton;
+    @BindView(R.id.accessibility_service_button)
+    ImageButton accessibilityButton;
+    @BindView(R.id.notification_service_button)
+    ImageButton notificationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-        grabButton.setOnClickListener(new View.OnClickListener() {
+        accessibilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //打开无障碍服务列表，需要用户手动开启抢红包功能
                 openAccessibilityService();
+            }
+        });
+        notificationButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openNotificationListenSettings();
             }
         });
     }
@@ -41,15 +49,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(Utils.isAccessibilitySettingsOn("RedEnvelopeService",this)){
-            grabButton.setImageDrawable(getResources().getDrawable(R.drawable.opened));
+        if(Utils.isAccessibilitySettingsOn("RedEnvelopeAccessibilityService",this)){
+            accessibilityButton.setImageDrawable(getResources().getDrawable(R.drawable.opened));
         }
         else
-            grabButton.setImageDrawable(getResources().getDrawable(R.drawable.closed));
+            accessibilityButton.setImageDrawable(getResources().getDrawable(R.drawable.closed));
+        if (Utils.isNotificationListenerEnabled(this)) {
+            notificationButton.setImageDrawable(getResources().getDrawable(R.drawable.opened));
+        }
+        else {
+            notificationButton.setImageDrawable(getResources().getDrawable(R.drawable.closed));
+        }
     }
 
     private void openAccessibilityService(){
         Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
         startActivity(intent);
+    }
+
+    public void openNotificationListenSettings() {
+        try {
+            Intent intent;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+                intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+            } else {
+                intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+            }
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

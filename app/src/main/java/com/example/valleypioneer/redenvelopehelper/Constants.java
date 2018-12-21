@@ -6,14 +6,14 @@ package com.example.valleypioneer.redenvelopehelper;
 
 public class Constants {
     /** 聊天界面ID */
-    public static final String GET_RED_ENVELOPE = "com.tencent.mm:id/ada";
-    public static final String LAUNCHER_UI_BACK = "com.tencent.mm:id/h9";
+    public static final String GET_RED_ENVELOPE = "com.tencent.mm:id/akv";
+    public static final String LAUNCHER_UI_BACK = "com.tencent.mm:id/j5";
     /** 抢红包界面ID */
-    public static final String GRAB_PARENT = "com.tencent.mm:id/c04";
-    public static final String CANCEL = "com.tencent.mm:id/c07";
-    public static final String GRAB = "com.tencent.mm:id/c2i";
+    public static final String CANCEL = "com.tencent.mm:id/cll";
+    public static final String GRAB = "com.tencent.mm:id/cnx";
     /** 红包详情界面ID */
-    public static final String LUCKY_MONEY_DETAIL_UI_BACK = "com.tencent.mm:id/ho";
-    public static final String LEAVE_MESSAGE = "com.tencent.mm:id/bzd";
+    public static final String LUCKY_MONEY_DETAIL_UI_BACK = "com.tencent.mm:id/jc";
+    public static final String LEAVE_MESSAGE = "com.tencent.mm:id/cku";
 
+    public static Boolean IS_NOTIFICATION_SHOWN = false;
 }
