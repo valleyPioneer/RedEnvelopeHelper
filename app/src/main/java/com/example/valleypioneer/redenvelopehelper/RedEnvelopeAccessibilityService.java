@@ -3,7 +3,10 @@ package com.example.valleypioneer.redenvelopehelper;
 import android.accessibilityservice.AccessibilityService;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -56,9 +59,17 @@ public class RedEnvelopeAccessibilityService extends AccessibilityService {
                         openLastRedEnvelope(Constants.GET_RED_ENVELOPE);
                     } else if (className.equals("com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyReceiveUI")) {
                         Log.i(TAG, "抢红包！");
-                        inputClick(Constants.GRAB);
+                        if (!inputClick(Constants.GRAB)) {
+                            inputClick(Constants.CANCEL);
+                        }
                     } else if (className.equals("com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyDetailUI")) {
                         Log.i(TAG, "退出红包详情界面！");
+                        // 群聊红包留言功能
+                        if (inputClick(Constants.LEAVE_MESSAGE)) {
+                            leaveMessage(Constants.EDIT_BOARD, Constants.LEAVE_MESSAGE_STRING);
+                            inputClick(Constants.SEND);
+                        }
+
                         inputClick(Constants.LUCKY_MONEY_DETAIL_UI_BACK);
                         performGlobalAction(GLOBAL_ACTION_HOME);
                         Constants.IS_NOTIFICATION_SHOWN = false;
@@ -101,6 +112,32 @@ public class RedEnvelopeAccessibilityService extends AccessibilityService {
             /** 对最后一个"领取红包"进行点击 */
             nodesList.get(nodesList.size() - 1).performAction(AccessibilityNodeInfo.ACTION_CLICK);
         }
+    }
+
+    public void leaveMessage(String widgetID, String text) {
+        AccessibilityNodeInfo root = getRootInActiveWindow();
+        if (root == null) return;
+
+            final List<AccessibilityNodeInfo> list = root.findAccessibilityNodeInfosByViewId(widgetID);
+            if (list != null && !list.isEmpty()) {
+                AccessibilityNodeInfo info = list.get(0);
+                //粘贴板
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("label", text);
+                clipboard.setPrimaryClip(clip);
+
+                CharSequence txt = info.getText();
+                if (txt == null) txt = "";
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    Bundle arguments = new Bundle();
+                    arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, 0);
+                    arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, txt.length());
+                    info.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
+                    info.performAction(AccessibilityNodeInfo.ACTION_SET_SELECTION, arguments);
+                    info.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+                }
+            }
     }
 
 

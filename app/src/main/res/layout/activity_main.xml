@@ -60,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/center_view_2"
             android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
             android:text="红包辅助服务"/>
 
         <Switch
@@ -91,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/center_view_3"
             android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
             android:text="红包通知服务"/>
 
         <Switch
@@ -123,6 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/center_view_4"
             android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
             android:text="红包延时设置"/>
 
         <com.xw.repo.BubbleSeekBar
@@ -144,6 +147,37 @@
             app:bsb_show_section_text="true"
             app:bsb_show_thumb_text="true"
             app:bsb_track_color="@color/colorPrimary"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/leave_message_re"
+        android:layout_below="@id/delay_re"
+        android:layout_marginBottom="15dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/center_view_5"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view_5"
+            android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
+            android:text="群聊红包留言板"/>
+
+       <EditText
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/leave_message"
+           android:layout_marginLeft="40dp"
+           android:layout_alignLeft="@id/center_view_5"
+           android:hint="路过"/>
 
     </RelativeLayout>
 

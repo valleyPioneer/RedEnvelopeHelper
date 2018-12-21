@@ -6,8 +6,11 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     BubbleSeekBar delaySeekBar;
     @BindView(R.id.wechat_version_tv)
     TextView wechatVersion;
+    @BindView(R.id.leave_message)
+    EditText leaveMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +74,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         wechatVersion.setText(Constants.WECHAT_VERSION);
+
+        leaveMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Constants.LEAVE_MESSAGE_STRING = s.toString();
+            }
+        });
     }
 
     @Override
@@ -90,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         delaySeekBar.setProgress(Constants.DELAY_TIME);
+
+        leaveMessage.setText(Constants.LEAVE_MESSAGE_STRING);
     }
 
     private void openAccessibilityService() {

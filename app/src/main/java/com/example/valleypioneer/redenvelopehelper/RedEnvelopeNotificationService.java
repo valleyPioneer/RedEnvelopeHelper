@@ -72,7 +72,7 @@ public class RedEnvelopeNotificationService extends NotificationListenerService 
                     e.printStackTrace();
                 }
             }
-        }, (long) Constants.DELAY_TIME);
+        }, (long) (Constants.DELAY_TIME * 1000));
     }
 
     @Override
